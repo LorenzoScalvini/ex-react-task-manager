@@ -16,7 +16,7 @@ const EditTaskModal = ({ show, onClose, task, onSave }) => {
       description,
       status,
     };
-    onSave(updatedTask); // Passa la task aggiornata alla funzione onSave
+    onSave(updatedTask);
   };
 
   return (

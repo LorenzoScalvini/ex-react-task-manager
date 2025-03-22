@@ -1,11 +1,24 @@
 .todo {
-  background-color: #ffcccc;
+  background-color: #483737;
+  color: #ffcccc;
 }
 
 .doing {
-  background-color: #ffffcc;
+  background-color: #484837;
+  color: #ffffcc;
 }
 
 .done {
-  background-color: #ccffcc;
+  background-color: #374837;
+  color: #ccffcc;
+}
+
+.taskLink {
+  text-decoration: none;
+  color: #70a7ff;
+}
+
+.taskLink:hover {
+  text-decoration: underline;
+  color: #a7ccff;
 }

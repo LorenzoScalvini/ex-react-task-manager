@@ -1,29 +1,15 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext } from 'react';
+import useTasks from '../hooks/useTasks';
 
+// Creazione del contesto
 export const GlobalContext = createContext();
 
+// Provider del contesto
 export const GlobalProvider = ({ children }) => {
-  const [tasks, setTasks] = useState([]);
-  const fetchTasks = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/tasks`);
-      if (!response.ok) {
-        throw new Error('Errore nel recupero dei task');
-      }
-      const data = await response.json();
-      setTasks(data);
-      console.log('Task recuperati:', data);
-    } catch (error) {
-      console.error('Errore:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+  const { tasks, addTask, removeTask, updateTask } = useTasks();
 
   return (
-    <GlobalContext.Provider value={{ tasks, setTasks }}>
+    <GlobalContext.Provider value={{ tasks, addTask, removeTask, updateTask }}>
       {children}
     </GlobalContext.Provider>
   );

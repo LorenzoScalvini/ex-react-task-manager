@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 
+// Custom hook per gestire i task
 const useTasks = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]); // Stato per memorizzare i task
 
   // Funzione per recuperare i task dall'API
   const fetchTasks = async () => {
@@ -11,7 +12,7 @@ const useTasks = () => {
         throw new Error('Errore nel recupero dei task');
       }
       const data = await response.json();
-      setTasks(data);
+      setTasks(data); // Aggiorna lo stato con i task recuperati
     } catch (error) {
       console.error('Errore:', error);
     }
@@ -60,7 +61,7 @@ const useTasks = () => {
         throw new Error(result.message);
       }
 
-      // Aggiorna lo stato globale rimuovendo la task
+      // Rimuove il task dallo stato globale
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
 
       return result; // Restituisce il risultato per gestire il successo
@@ -108,11 +109,11 @@ const useTasks = () => {
   }, []);
 
   return {
-    tasks,
-    addTask,
-    removeTask,
-    updateTask,
+    tasks, // Stato dei task
+    addTask, // Funzione per aggiungere un task
+    removeTask, // Funzione per rimuovere un task
+    updateTask, // Funzione per aggiornare un task
   };
 };
 
-export default useTasks;
+export default useTasks; // Esporta il custom hook

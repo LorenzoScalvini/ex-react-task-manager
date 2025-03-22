@@ -6,46 +6,43 @@ import EditTaskModal from '../components/EditTaskModal';
 import styles from './TaskDetail.module.css';
 
 const TaskDetail = () => {
-  const { id } = useParams(); // Ottieni l'ID del task dall'URL
-  const { tasks, removeTask, updateTask } = useContext(GlobalContext); // Usa il contesto globale
-  const [task, setTask] = useState(null); // Stato per memorizzare i dettagli del task
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Stato per la modale di eliminazione
-  const [showEditModal, setShowEditModal] = useState(false); // Stato per la modale di modifica
-  const navigate = useNavigate(); // Hook per la navigazione
+  const { id } = useParams();
+  const { tasks, removeTask, updateTask } = useContext(GlobalContext);
+  const [task, setTask] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const navigate = useNavigate();
 
-  // Trova il task corrispondente all'ID
   useEffect(() => {
     const foundTask = tasks.find((t) => t.id === parseInt(id));
     if (foundTask) {
       setTask(foundTask);
     } else {
-      navigate('/'); // Reindirizza alla home se il task non esiste
+      navigate('/');
     }
   }, [id, tasks, navigate]);
 
-  // Funzione per gestire l'eliminazione del task
   const handleDelete = async () => {
     try {
-      const result = await removeTask(task.id); // Chiama la funzione removeTask
+      const result = await removeTask(task.id);
 
       if (result.success) {
         alert('Task eliminato con successo!');
-        navigate('/'); // Reindirizza alla home dopo l'eliminazione
+        navigate('/');
       }
     } catch (error) {
       alert(`Errore: ${error.message}`);
     }
   };
 
-  // Funzione per gestire la modifica del task
   const handleSave = async (updatedTask) => {
     try {
-      const result = await updateTask(task.id, updatedTask); // Chiama la funzione updateTask
+      const result = await updateTask(task.id, updatedTask);
 
       if (result.success) {
         alert('Task aggiornato con successo!');
-        setShowEditModal(false); // Chiude la modale di modifica
-        setTask(result.task); // Aggiorna i dettagli del task visualizzati
+        setShowEditModal(false);
+        setTask(result.task);
       }
     } catch (error) {
       alert(`Errore: ${error.message}`);
@@ -53,7 +50,7 @@ const TaskDetail = () => {
   };
 
   if (!task) {
-    return <div>Caricamento...</div>; // Mostra un messaggio di caricamento
+    return <div>Caricamento...</div>;
   }
 
   return (
@@ -75,7 +72,6 @@ const TaskDetail = () => {
         </p>
       </div>
 
-      {/* Pulsanti per modificare ed eliminare il task */}
       <div className={styles.actions}>
         <button
           onClick={() => setShowEditModal(true)}
@@ -91,7 +87,6 @@ const TaskDetail = () => {
         </button>
       </div>
 
-      {/* Modale di eliminazione */}
       <Modal
         title="Conferma Eliminazione"
         content="Sei sicuro di voler eliminare questo task?"
@@ -101,7 +96,6 @@ const TaskDetail = () => {
         confirmText="Elimina"
       />
 
-      {/* Modale di modifica */}
       <EditTaskModal
         show={showEditModal}
         onClose={() => setShowEditModal(false)}

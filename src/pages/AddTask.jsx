@@ -48,7 +48,6 @@ const AddTask = () => {
 
       if (result.success) {
         alert('Task creato con successo!');
-        // Resetta il form
         setTitle('');
         descriptionRef.current.value = '';
         statusRef.current.value = 'To do';

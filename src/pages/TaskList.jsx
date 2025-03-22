@@ -5,27 +5,23 @@ import styles from './TaskList.module.css';
 
 const TaskList = () => {
   const { tasks } = useContext(GlobalContext);
-  const [sortBy, setSortBy] = useState('createdAt'); // Criterio di ordinamento
-  const [sortOrder, setSortOrder] = useState(1); // Direzione di ordinamento (1 = crescente, -1 = decrescente)
-  const [searchQuery, setSearchQuery] = useState(''); // Stato per la query di ricerca
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Funzione per gestire il click sulle intestazioni della tabella
   const handleSort = (column) => {
     if (sortBy === column) {
-      // Se la colonna è già selezionata, inverte l'ordine
       setSortOrder((prevOrder) => -prevOrder);
     } else {
-      // Se la colonna è diversa, imposta il nuovo criterio e l'ordine crescente
       setSortBy(column);
       setSortOrder(1);
     }
   };
 
-  // Logica di ordinamento e filtraggio
   const sortedTasks = useMemo(() => {
     return [...tasks]
-      .filter(
-        (task) => task.title.toLowerCase().includes(searchQuery.toLowerCase()) // Filtra i task in base alla query
+      .filter((task) =>
+        task.title.toLowerCase().includes(searchQuery.toLowerCase())
       )
       .sort((a, b) => {
         let comparison = 0;
@@ -35,7 +31,6 @@ const TaskList = () => {
             comparison = a.title.localeCompare(b.title);
             break;
           case 'status':
-            // Ordine predefinito: "To do" < "Doing" < "Done"
             const statusOrder = { 'To do': 1, Doing: 2, Done: 3 };
             comparison = statusOrder[a.status] - statusOrder[b.status];
             break;
@@ -47,11 +42,10 @@ const TaskList = () => {
             break;
         }
 
-        return comparison * sortOrder; // Applica l'ordine crescente o decrescente
+        return comparison * sortOrder;
       });
   }, [tasks, sortBy, sortOrder, searchQuery]);
 
-  // Funzione di debounce per ritardare l'aggiornamento di searchQuery
   const debounce = useCallback((func, delay) => {
     let timer;
     return (...args) => {
@@ -60,7 +54,6 @@ const TaskList = () => {
     };
   }, []);
 
-  // Funzione per gestire il cambio di valore dell'input di ricerca
   const handleSearchChange = debounce((value) => {
     setSearchQuery(value);
   }, 300);
@@ -69,7 +62,6 @@ const TaskList = () => {
     <div className={styles.container}>
       <h1>Lista dei Task</h1>
 
-      {/* Input di ricerca */}
       <div className={styles.searchContainer}>
         <input
           type="text"
@@ -79,7 +71,6 @@ const TaskList = () => {
         />
       </div>
 
-      {/* Tabella dei task */}
       <table className={styles.table}>
         <thead>
           <tr>
@@ -95,7 +86,6 @@ const TaskList = () => {
         </tbody>
       </table>
 
-      {/* Istruzioni per l'ordinamento */}
       <div className={styles.instructions}>
         <h3>Come ordinare i task:</h3>
         <ul>

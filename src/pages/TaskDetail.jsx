@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalContext';
 import Modal from '../components/Modal';
 import EditTaskModal from '../components/EditTaskModal';
-import styles from './TaskDetail.module.css';
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -50,41 +49,57 @@ const TaskDetail = () => {
   };
 
   if (!task) {
-    return <div>Caricamento...</div>;
+    return <div className="text-center py-6">Caricamento...</div>;
   }
 
   return (
-    <div className={styles.container}>
-      <h1>Dettaglio Task</h1>
-      <div className={styles.taskDetails}>
-        <p>
-          <strong>Nome:</strong> {task.title}
-        </p>
-        <p>
-          <strong>Descrizione:</strong> {task.description}
-        </p>
-        <p>
-          <strong>Stato:</strong> {task.status}
-        </p>
-        <p>
-          <strong>Data di creazione:</strong>{' '}
-          {new Date(task.createdAt).toLocaleDateString()}
-        </p>
-      </div>
+    <div className="container mx-auto px-4 py-6 max-w-xl">
+      <h1 className="text-2xl font-bold mb-6">Dettaglio Task</h1>
+      <div className="bg-white shadow-md rounded-lg p-6 space-y-4">
+        <div>
+          <strong className="text-gray-600">Nome:</strong>
+          <p className="text-lg font-semibold">{task.title}</p>
+        </div>
+        <div>
+          <strong className="text-gray-600">Descrizione:</strong>
+          <p>{task.description}</p>
+        </div>
+        <div>
+          <strong className="text-gray-600">Stato:</strong>
+          <span
+            className={`
+              inline-block px-2 py-1 rounded text-sm 
+              ${
+                task.status === 'To do'
+                  ? 'bg-red-100 text-red-800'
+                  : task.status === 'Doing'
+                  ? 'bg-yellow-100 text-yellow-800'
+                  : 'bg-green-100 text-green-800'
+              }
+            `}
+          >
+            {task.status}
+          </span>
+        </div>
+        <div>
+          <strong className="text-gray-600">Data di creazione:</strong>
+          <p>{new Date(task.createdAt).toLocaleDateString()}</p>
+        </div>
 
-      <div className={styles.actions}>
-        <button
-          onClick={() => setShowEditModal(true)}
-          className={styles.editButton}
-        >
-          Modifica Task
-        </button>
-        <button
-          onClick={() => setShowDeleteModal(true)}
-          className={styles.deleteButton}
-        >
-          Elimina Task
-        </button>
+        <div className="flex space-x-4 pt-4">
+          <button
+            onClick={() => setShowEditModal(true)}
+            className="btn btn-edit flex-1"
+          >
+            Modifica Task
+          </button>
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            className="btn btn-danger flex-1"
+          >
+            Elimina Task
+          </button>
+        </div>
       </div>
 
       <Modal

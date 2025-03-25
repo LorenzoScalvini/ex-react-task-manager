@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import Modal from './Modal';
-import styles from './EditTaskModal.module.css';
 
 const EditTaskModal = ({ show, onClose, task, onSave }) => {
   const [title, setTitle] = useState(task.title);
@@ -23,35 +22,53 @@ const EditTaskModal = ({ show, onClose, task, onSave }) => {
     <Modal
       title="Modifica Task"
       content={
-        <form ref={editFormRef} onSubmit={handleSubmit} className={styles.form}>
-          <div className={styles.formGroup}>
-            <label htmlFor="title">Nome</label>
+        <form ref={editFormRef} onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Nome
+            </label>
             <input
               type="text"
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="description">Descrizione</label>
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Descrizione
+            </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label htmlFor="status">Stato</label>
+          <div>
+            <label
+              htmlFor="status"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Stato
+            </label>
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               required
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
             >
               <option value="To do">To do</option>
               <option value="Doing">Doing</option>

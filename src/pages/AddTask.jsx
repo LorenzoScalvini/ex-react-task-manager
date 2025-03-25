@@ -1,6 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
-import styles from './AddTask.module.css';
 
 const AddTask = () => {
   const [title, setTitle] = useState('');
@@ -58,36 +57,65 @@ const AddTask = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1>Aggiungi un Task</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <div className={styles.formGroup}>
-          <label htmlFor="title">Nome del Task</label>
+    <div className="container mx-auto px-4 py-6 max-w-md">
+      <h1 className="text-2xl font-bold mb-6">Aggiungi un Task</h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Nome del Task
+          </label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={handleTitleChange}
-            className={error ? styles.errorInput : ''}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none 
+              ${
+                error
+                  ? 'border-red-500 focus:ring-2 focus:ring-red-200'
+                  : 'border-gray-300 focus:ring-2 focus:ring-blue-200'
+              }`}
           />
-          {error && <p className={styles.errorMessage}>{error}</p>}
+          {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="description">Descrizione</label>
-          <textarea id="description" ref={descriptionRef} />
+        <div>
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Descrizione
+          </label>
+          <textarea
+            id="description"
+            ref={descriptionRef}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="status">Stato</label>
-          <select id="status" ref={statusRef} defaultValue="To do">
+        <div>
+          <label
+            htmlFor="status"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Stato
+          </label>
+          <select
+            id="status"
+            ref={statusRef}
+            defaultValue="To do"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
             <option value="To do">To do</option>
             <option value="Doing">Doing</option>
             <option value="Done">Done</option>
           </select>
         </div>
 
-        <button type="submit" className={styles.submitButton}>
+        <button type="submit" className="w-full btn btn-primary">
           Aggiungi Task
         </button>
       </form>

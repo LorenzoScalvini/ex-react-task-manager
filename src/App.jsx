@@ -2,22 +2,35 @@ import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
 import TaskDetail from './pages/TaskDetail';
-import styles from './App.module.css';
 
 function App() {
   return (
     <BrowserRouter>
-      <nav className={styles.nav}>
+      <nav className="flex justify-center space-x-4 p-4 bg-gray-100">
         <NavLink
           to="/"
           end
-          className={({ isActive }) => (isActive ? styles.active : styles.link)}
+          className={({ isActive }) =>
+            `${
+              isActive
+                ? 'text-blue-600 font-bold border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-400'
+            } 
+            transition-colors duration-300`
+          }
         >
           Lista Task
         </NavLink>
         <NavLink
           to="/add"
-          className={({ isActive }) => (isActive ? styles.active : styles.link)}
+          className={({ isActive }) =>
+            `${
+              isActive
+                ? 'text-blue-600 font-bold border-b-2 border-blue-600'
+                : 'text-gray-600 hover:text-blue-400'
+            } 
+            transition-colors duration-300`
+          }
         >
           Aggiungi Task
         </NavLink>

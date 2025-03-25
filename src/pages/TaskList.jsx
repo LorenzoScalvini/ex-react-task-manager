@@ -1,7 +1,6 @@
 import React, { useState, useContext, useMemo, useCallback } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
-import styles from './TaskList.module.css';
 
 const TaskList = () => {
   const { tasks } = useContext(GlobalContext);
@@ -59,24 +58,39 @@ const TaskList = () => {
   }, 300);
 
   return (
-    <div className={styles.container}>
-      <h1>Lista dei Task</h1>
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold mb-4">Lista dei Task</h1>
 
-      <div className={styles.searchContainer}>
+      <div className="mb-4">
         <input
           type="text"
           placeholder="Cerca per nome..."
           onChange={(e) => handleSearchChange(e.target.value)}
-          className={styles.searchInput}
+          className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
-      <table className={styles.table}>
+      <table className="w-full border-collapse">
         <thead>
-          <tr>
-            <th onClick={() => handleSort('title')}>Nome</th>
-            <th onClick={() => handleSort('status')}>Stato</th>
-            <th onClick={() => handleSort('createdAt')}>Data di Creazione</th>
+          <tr className="bg-gray-100">
+            <th
+              onClick={() => handleSort('title')}
+              className="p-2 text-left cursor-pointer hover:bg-gray-200"
+            >
+              Nome
+            </th>
+            <th
+              onClick={() => handleSort('status')}
+              className="p-2 text-left cursor-pointer hover:bg-gray-200"
+            >
+              Stato
+            </th>
+            <th
+              onClick={() => handleSort('createdAt')}
+              className="p-2 text-left cursor-pointer hover:bg-gray-200"
+            >
+              Data di Creazione
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -86,9 +100,9 @@ const TaskList = () => {
         </tbody>
       </table>
 
-      <div className={styles.instructions}>
-        <h3>Come ordinare i task:</h3>
-        <ul>
+      <div className="mt-6 p-4 bg-blue-50 rounded-md">
+        <h3 className="text-lg font-semibold mb-2">Come ordinare i task:</h3>
+        <ul className="list-disc list-inside space-y-2">
           <li>
             <strong>Clicca su "Nome"</strong> per ordinare i task in ordine
             alfabetico <strong>crescente</strong> o <strong>decrescente</strong>
@@ -105,11 +119,9 @@ const TaskList = () => {
             <strong>meno recente</strong> o viceversa.
           </li>
         </ul>
-        <p>
-          <em>
-            Suggerimento: Clicca di nuovo sulla stessa intestazione per
-            invertire l'ordine.
-          </em>
+        <p className="mt-2 italic text-gray-600">
+          Suggerimento: Clicca di nuovo sulla stessa intestazione per invertire
+          l'ordine.
         </p>
       </div>
     </div>

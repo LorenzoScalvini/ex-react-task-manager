@@ -6,17 +6,15 @@ import TaskDetail from './pages/TaskDetail';
 function App() {
   return (
     <BrowserRouter>
-      <nav className="flex justify-center space-x-4 p-4 bg-gray-100">
+      <nav className="flex justify-center gap-4 p-4 bg-gray-50">
         <NavLink
           to="/"
-          end
           className={({ isActive }) =>
-            `${
+            `px-4 py-2 rounded-md transition-all ${
               isActive
-                ? 'text-blue-600 font-bold border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-blue-400'
-            } 
-            transition-colors duration-300`
+                ? 'bg-blue-100 text-blue-600 font-medium'
+                : 'hover:bg-gray-100'
+            }`
           }
         >
           Lista Task
@@ -24,22 +22,24 @@ function App() {
         <NavLink
           to="/add"
           className={({ isActive }) =>
-            `${
+            `px-4 py-2 rounded-md transition-all ${
               isActive
-                ? 'text-blue-600 font-bold border-b-2 border-blue-600'
-                : 'text-gray-600 hover:text-blue-400'
-            } 
-            transition-colors duration-300`
+                ? 'bg-blue-100 text-blue-600 font-medium'
+                : 'hover:bg-gray-100'
+            }`
           }
         >
           Aggiungi Task
         </NavLink>
       </nav>
-      <Routes>
-        <Route path="/" element={<TaskList />} />
-        <Route path="/add" element={<AddTask />} />
-        <Route path="/task/:id" element={<TaskDetail />} />
-      </Routes>
+
+      <main className="container mx-auto px-4 py-8 max-w-3xl">
+        <Routes>
+          <Route path="/" element={<TaskList />} />
+          <Route path="/add" element={<AddTask />} />
+          <Route path="/task/:id" element={<TaskDetail />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 }

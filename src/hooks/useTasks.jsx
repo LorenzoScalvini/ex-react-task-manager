@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 // URL dell'API
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; // Usa import.meta.env per Vite
 
 const useTasks = () => {
   const [tasks, setTasks] = useState([]); // Stato per memorizzare i task
@@ -9,11 +9,11 @@ const useTasks = () => {
   // Funzione per recuperare i task dall'API
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`${API_URL}/tasks`);
-      const data = await response.json();
-      setTasks(data); // Aggiorna lo stato con i task recuperati
+      const response = await fetch(`${API_URL}/tasks`); // Facciamo una richiesta GET all'API
+      const data = await response.json(); // Convertiamo la risposta in JSON
+      setTasks(data); // Aggiorniamo lo stato con i task recuperati
     } catch (error) {
-      console.error('Errore nel recupero dei task:', error);
+      console.error('Errore nel recupero dei task:', error); // Mostriamo un errore in caso di problemi
     }
   };
 
@@ -21,16 +21,16 @@ const useTasks = () => {
   const addTask = async (task) => {
     try {
       const response = await fetch(`${API_URL}/tasks`, {
-        method: 'POST',
+        method: 'POST', // Facciamo una richiesta POST per aggiungere un task
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Indichiamo che stiamo inviando dati in formato JSON
         },
-        body: JSON.stringify(task),
+        body: JSON.stringify(task), // Inviamo i dati del nuovo task
       });
-      const result = await response.json();
-      setTasks((prevTasks) => [...prevTasks, result.task]); // Aggiunge il nuovo task allo stato
+      const result = await response.json(); // Convertiamo la risposta in JSON
+      setTasks((prevTasks) => [...prevTasks, result.task]); // Aggiungiamo il nuovo task allo stato
     } catch (error) {
-      console.error("Errore nell'aggiunta del task:", error);
+      console.error("Errore nell'aggiunta del task:", error); // Mostriamo un errore in caso di problemi
     }
   };
 
@@ -38,11 +38,11 @@ const useTasks = () => {
   const removeTask = async (taskId) => {
     try {
       await fetch(`${API_URL}/tasks/${taskId}`, {
-        method: 'DELETE',
+        method: 'DELETE', // Facciamo una richiesta DELETE per rimuovere un task
       });
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Rimuove il task dallo stato
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Rimuoviamo il task dallo stato
     } catch (error) {
-      console.error('Errore nella rimozione del task:', error);
+      console.error('Errore nella rimozione del task:', error); // Mostriamo un errore in caso di problemi
     }
   };
 
@@ -50,24 +50,24 @@ const useTasks = () => {
   const updateTask = async (taskId, updatedTask) => {
     try {
       const response = await fetch(`${API_URL}/tasks/${taskId}`, {
-        method: 'PUT',
+        method: 'PUT', // Facciamo una richiesta PUT per aggiornare un task
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Indichiamo che stiamo inviando dati in formato JSON
         },
-        body: JSON.stringify(updatedTask),
+        body: JSON.stringify(updatedTask), // Inviamo i dati aggiornati del task
       });
-      const result = await response.json();
+      const result = await response.json(); // Convertiamo la risposta in JSON
       setTasks((prevTasks) =>
         prevTasks.map((task) => (task.id === taskId ? result.task : task))
-      ); // Aggiorna il task nello stato
+      ); // Aggiorniamo il task nello stato
     } catch (error) {
-      console.error("Errore nell'aggiornamento del task:", error);
+      console.error("Errore nell'aggiornamento del task:", error); // Mostriamo un errore in caso di problemi
     }
   };
 
-  // Effettua la richiesta al caricamento del componente
+  // Effetto per recuperare i task al caricamento del componente
   useEffect(() => {
-    fetchTasks();
+    fetchTasks(); // Recuperiamo i task quando il componente viene montato
   }, []);
 
   return {
@@ -78,4 +78,4 @@ const useTasks = () => {
   };
 };
 
-export default useTasks; // Esporta il custom hook
+export default useTasks; // Esportiamo il custom hook per usarlo in altri componenti

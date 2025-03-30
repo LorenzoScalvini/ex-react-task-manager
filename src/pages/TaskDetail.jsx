@@ -3,6 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../context/GlobalContext';
 import Modal from '../components/Modal';
 import EditTaskModal from '../components/EditTaskModal';
+import {
+  PencilIcon,
+  TrashIcon,
+  ArrowLeftIcon,
+} from '@heroicons/react/24/outline';
 
 const TaskDetail = () => {
   const { id } = useParams();
@@ -29,67 +34,100 @@ const TaskDetail = () => {
     setShowEditModal(false);
   };
 
-  if (!task) return <div className="text-center py-8">Caricamento...</div>;
+  if (!task)
+    return <div className="text-center py-8 text-gray-300">Caricamento...</div>;
+
+  // Dark mode status colors
+  const statusColors = {
+    'To do': 'bg-red-900/30 text-red-300 border border-red-800',
+    Doing: 'bg-yellow-900/30 text-yellow-300 border border-yellow-800',
+    Done: 'bg-green-900/30 text-green-300 border border-green-800',
+  };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold text-center mb-6">Dettaglio Task</h1>
+    <div className="max-w-2xl mx-auto p-4">
+      <button
+        onClick={() => navigate(-1)}
+        className="flex items-center gap-2 text-blue-400 hover:text-blue-300 mb-6 transition-colors"
+      >
+        <ArrowLeftIcon className="h-5 w-5" />
+        Indietro
+      </button>
 
-      <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-        <div>
-          <h2 className="font-semibold">Nome:</h2>
-          <p>{task.title}</p>
+      <h1 className="text-3xl font-bold text-center mb-8 text-white p-6">
+        Dettaglio Task
+      </h1>
+
+      <div className="bg-gray-800 p-6 rounded-lg border border-gray-700 shadow-lg space-y-6">
+        {/* Task Details */}
+        <div className="space-y-6">
+          <div>
+            <h2 className="font-semibold text-gray-300 mb-2">Nome:</h2>
+            <p className="text-white text-lg">{task.title}</p>
+          </div>
+
+          <div>
+            <h2 className="font-semibold text-gray-300 mb-2">Descrizione:</h2>
+            <p className="text-white whitespace-pre-line">
+              {task.description || 'Nessuna descrizione'}
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-semibold text-gray-300 mb-2">Stato:</h2>
+            <span
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                statusColors[task.status]
+              }`}
+            >
+              {task.status}
+            </span>
+          </div>
+
+          <div>
+            <h2 className="font-semibold text-gray-300 mb-2">
+              Data creazione:
+            </h2>
+            <p className="text-gray-400">
+              {new Date(task.createdAt).toLocaleDateString('it-IT', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+          </div>
         </div>
 
-        <div>
-          <h2 className="font-semibold">Descrizione:</h2>
-          <p>{task.description}</p>
-        </div>
-
-        <div>
-          <h2 className="font-semibold">Stato:</h2>
-          <span
-            className={`px-2 py-1 rounded-full text-xs ${
-              task.status === 'To do'
-                ? 'bg-red-100 text-red-800'
-                : task.status === 'Doing'
-                ? 'bg-yellow-100 text-yellow-800'
-                : 'bg-green-100 text-green-800'
-            }`}
-          >
-            {task.status}
-          </span>
-        </div>
-
-        <div>
-          <h2 className="font-semibold">Data creazione:</h2>
-          <p>{new Date(task.createdAt).toLocaleDateString()}</p>
-        </div>
-
-        <div className="flex gap-4 pt-4">
+        {/* Action Buttons */}
+        <div className="flex gap-4 pt-6">
           <button
             onClick={() => setShowEditModal(true)}
-            className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2"
           >
+            <PencilIcon className="h-5 w-5" />
             Modifica
           </button>
           <button
             onClick={() => setShowDeleteModal(true)}
-            className="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors"
+            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2"
           >
+            <TrashIcon className="h-5 w-5" />
             Elimina
           </button>
         </div>
       </div>
 
+      {/* Delete Confirmation Modal */}
       <Modal
         show={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}
         title="Conferma eliminazione"
         content="Sei sicuro di voler eliminare questo task?"
+        confirmText="Elimina"
       />
 
+      {/* Edit Task Modal */}
       <EditTaskModal
         show={showEditModal}
         onClose={() => setShowEditModal(false)}

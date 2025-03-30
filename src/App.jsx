@@ -1,3 +1,4 @@
+// App.jsx
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import TaskList from './pages/TaskList';
 import AddTask from './pages/AddTask';
@@ -7,16 +8,15 @@ import { HomeIcon, PlusIcon } from '@heroicons/react/24/outline';
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-900 text-white">
-        {/* Navigation */}
-        <nav className="flex justify-center gap-4 p-4 bg-gray-800 border-b border-gray-700">
+      <div className="min-h-screen bg-white text-black">
+        <nav className="flex justify-center gap-4 p-4 bg-gray-100 border-b border-gray-300">
           <NavLink
             to="/"
             className={({ isActive }) =>
               `px-4 py-2 rounded-md transition-all flex items-center gap-2 ${
                 isActive
-                  ? 'bg-blue-600 text-white font-medium'
-                  : 'text-gray-300 hover:bg-gray-700'
+                  ? 'bg-white text-black font-medium border border-gray-300'
+                  : 'text-gray-700 hover:bg-gray-200'
               }`
             }
           >
@@ -28,8 +28,8 @@ function App() {
             className={({ isActive }) =>
               `px-4 py-2 rounded-md transition-all flex items-center gap-2 ${
                 isActive
-                  ? 'bg-blue-600 text-white font-medium'
-                  : 'text-gray-300 hover:bg-gray-700'
+                  ? 'bg-white text-black font-medium border border-gray-300'
+                  : 'text-gray-700 hover:bg-gray-200'
               }`
             }
           >
@@ -38,8 +38,7 @@ function App() {
           </NavLink>
         </nav>
 
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-8 max-w-6xl">
+        <main className="container mx-auto px-4 py-8">
           <Routes>
             <Route path="/" element={<TaskList />} />
             <Route path="/add" element={<AddTask />} />

@@ -1,3 +1,4 @@
+// EditTaskModal.jsx
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
@@ -8,9 +9,15 @@ const EditTaskModal = ({ show, onClose, task, onSave }) => {
     description: task.description,
     status: task.status,
   });
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.title.trim()) {
+      setError('Il nome è obbligatorio');
+      return;
+    }
+    setError('');
     onSave(formData);
   };
 
@@ -20,7 +27,7 @@ const EditTaskModal = ({ show, onClose, task, onSave }) => {
       onClose={onClose}
       onConfirm={handleSubmit}
       title={
-        <div className="flex items-center gap-2 text-white">
+        <div className="flex items-center gap-2 text-black">
           <PencilSquareIcon className="h-5 w-5" />
           Modifica Task
         </div>
@@ -28,40 +35,39 @@ const EditTaskModal = ({ show, onClose, task, onSave }) => {
       content={
         <form className="space-y-4">
           <div>
-            <label className="block mb-1 text-white">Nome</label>
+            <label className="block mb-1 text-black">Nome</label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) =>
                 setFormData({ ...formData, title: e.target.value })
               }
-              className="w-full p-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 bg-white border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
+            {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
           </div>
-
           <div>
-            <label className="block mb-1 text-white">Descrizione</label>
+            <label className="block mb-1 text-black">Descrizione</label>
             <textarea
               value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
-              className="w-full p-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 bg-white border border-gray-300 rounded-md text-black placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
-
           <div>
-            <label className="block mb-1 text-white">Stato</label>
+            <label className="block mb-1 text-black">Stato</label>
             <select
               value={formData.status}
               onChange={(e) =>
                 setFormData({ ...formData, status: e.target.value })
               }
-              className="w-full p-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full p-2 bg-white border border-gray-300 rounded-md text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
             >
-              <option value="To do">To do</option>
-              <option value="Doing">Doing</option>
-              <option value="Done">Done</option>
+              <option value="To do">Da fare</option>
+              <option value="Doing">In corso</option>
+              <option value="Done">Completato</option>
             </select>
           </div>
         </form>

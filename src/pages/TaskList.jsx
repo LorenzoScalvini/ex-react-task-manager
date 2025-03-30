@@ -1,4 +1,5 @@
-import React, { useContext, useMemo } from 'react';
+// TaskList.jsx
+import React, { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
 import {
@@ -8,12 +9,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 const TaskList = () => {
-  const { tasks } = useContext(GlobalContext);
+  const { tasks, loading, error } = useContext(GlobalContext);
   const [sortBy, setSortBy] = React.useState('createdAt');
-  const [sortOrder, setSortOrder] = React.useState(-1); // Default to newest first
+  const [sortOrder, setSortOrder] = React.useState(-1);
   const [search, setSearch] = React.useState('');
 
-  const sortedTasks = useMemo(() => {
+  const sortedTasks = React.useMemo(() => {
     return [...tasks]
       .filter(
         (task) =>
@@ -44,38 +45,43 @@ const TaskList = () => {
   const SortIcon = ({ column }) =>
     sortBy === column ? (
       sortOrder > 0 ? (
-        <ArrowUpIcon className="h-4 w-4 ml-1 inline" />
+        <ArrowUpIcon className="h-4 w-4 ml-1 inline text-black" />
       ) : (
-        <ArrowDownIcon className="h-4 w-4 ml-1 inline" />
+        <ArrowDownIcon className="h-4 w-4 ml-1 inline text-black" />
       )
     ) : null;
 
+  if (loading)
+    return <div className="text-center py-8 text-gray-600">Caricamento...</div>;
+  if (error)
+    return <div className="text-center py-8 text-red-600">{error}</div>;
+
   return (
-    <div className="space-y-4 max-w-6xl">
-      <h1 className="text-3xl font-bold text-center text-white mb-8 p-4">
-        Lista Task 📝
+    <div className="space-y-4 max-w-6xl mx-auto px-4">
+      <h1 className="text-3xl font-bold text-center mb-8 text-black">
+        Lista Task
       </h1>
 
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+          <MagnifyingGlassIcon className="h-5 w-5 text-gray-500" />
         </div>
         <input
           type="text"
           placeholder="Cerca task per titolo o descrizione..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-3 bg-white border border-gray-300 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-700">
+      <div className="overflow-x-auto rounded-lg border border-gray-300">
         <table className="w-full">
-          <thead className="bg-gray-800">
+          <thead className="bg-gray-100">
             <tr>
               <th
                 onClick={() => handleSort('title')}
-                className="p-4 text-left text-gray-300 font-medium cursor-pointer hover:bg-gray-700 transition-colors"
+                className="p-4 text-left text-black font-medium cursor-pointer hover:bg-gray-200 transition-colors"
               >
                 <div className="flex items-center">
                   Nome
@@ -84,7 +90,7 @@ const TaskList = () => {
               </th>
               <th
                 onClick={() => handleSort('status')}
-                className="p-4 text-left text-gray-300 font-medium cursor-pointer hover:bg-gray-700 transition-colors"
+                className="p-4 text-left text-black font-medium cursor-pointer hover:bg-gray-200 transition-colors"
               >
                 <div className="flex items-center">
                   Stato
@@ -93,7 +99,7 @@ const TaskList = () => {
               </th>
               <th
                 onClick={() => handleSort('createdAt')}
-                className="p-4 text-left text-gray-300 font-medium cursor-pointer hover:bg-gray-700 transition-colors"
+                className="p-4 text-left text-black font-medium cursor-pointer hover:bg-gray-200 transition-colors"
               >
                 <div className="flex items-center">
                   Data Creazione
@@ -102,12 +108,12 @@ const TaskList = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700">
+          <tbody className="divide-y divide-gray-300">
             {sortedTasks.length > 0 ? (
               sortedTasks.map((task) => <TaskRow key={task.id} task={task} />)
             ) : (
               <tr>
-                <td colSpan="3" className="p-4 text-center text-gray-400">
+                <td colSpan="3" className="p-4 text-center text-gray-600">
                   Nessun task trovato
                 </td>
               </tr>

@@ -1,27 +1,25 @@
+// TaskRow.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
 
 const TaskRow = React.memo(({ task }) => {
-  // Dark mode status colors
   const statusColors = {
-    'To do': 'bg-red-900/30 text-red-300 border border-red-800',
-    Doing: 'bg-yellow-900/30 text-yellow-300 border border-yellow-800',
-    Done: 'bg-green-900/30 text-green-300 border border-green-800',
+    'To do': 'bg-red-100 text-red-800 border border-red-200',
+    Doing: 'bg-yellow-100 text-yellow-800 border border-yellow-200',
+    Done: 'bg-green-100 text-green-800 border border-green-200',
   };
 
   return (
-    <tr className="border-b border-gray-700 hover:bg-gray-800/50 transition-colors">
-      {/* Task Title */}
+    <tr className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
       <td className="p-3">
         <Link
           to={`/task/${task.id}`}
-          className="text-blue-400 hover:text-blue-300 hover:underline transition-colors"
+          className="text-blue-600 hover:text-blue-800 hover:underline transition-colors"
         >
           {task.title}
         </Link>
       </td>
 
-      {/* Task Status */}
       <td className="p-3">
         <span
           className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -32,8 +30,7 @@ const TaskRow = React.memo(({ task }) => {
         </span>
       </td>
 
-      {/* Creation Date */}
-      <td className="p-3 text-gray-300">
+      <td className="p-3 text-gray-700">
         {new Date(task.createdAt).toLocaleDateString()}
       </td>
     </tr>

@@ -1,81 +1,87 @@
+// useTasks.jsx
 import { useState, useEffect } from 'react';
-
-// URL dell'API
-const API_URL = import.meta.env.VITE_API_URL; // Usa import.meta.env per Vite
+const API_URL = import.meta.env.VITE_API_URL;
 
 const useTasks = () => {
-  const [tasks, setTasks] = useState([]); // Stato per memorizzare i task
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Funzione per recuperare i task dall'API
   const fetchTasks = async () => {
     try {
-      const response = await fetch(`${API_URL}/tasks`); // Facciamo una richiesta GET all'API
-      const data = await response.json(); // Convertiamo la risposta in JSON
-      setTasks(data); // Aggiorniamo lo stato con i task recuperati
+      setLoading(true);
+      const response = await fetch(`${API_URL}/tasks`);
+      if (!response.ok) throw new Error('Errore nel recupero dei task');
+      const data = await response.json();
+      setTasks(data);
+      setError(null);
     } catch (error) {
-      console.error('Errore nel recupero dei task:', error); // Mostriamo un errore in caso di problemi
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Funzione per aggiungere un task
   const addTask = async (task) => {
     try {
       const response = await fetch(`${API_URL}/tasks`, {
-        method: 'POST', // Facciamo una richiesta POST per aggiungere un task
-        headers: {
-          'Content-Type': 'application/json', // Indichiamo che stiamo inviando dati in formato JSON
-        },
-        body: JSON.stringify(task), // Inviamo i dati del nuovo task
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(task),
       });
-      const result = await response.json(); // Convertiamo la risposta in JSON
-      setTasks((prevTasks) => [...prevTasks, result.task]); // Aggiungiamo il nuovo task allo stato
+      if (!response.ok) throw new Error("Errore nell'aggiunta del task");
+      const result = await response.json();
+      setTasks((prevTasks) => [...prevTasks, result.task]);
+      return { success: true };
     } catch (error) {
-      console.error("Errore nell'aggiunta del task:", error); // Mostriamo un errore in caso di problemi
+      return { success: false, error: error.message };
     }
   };
 
-  // Funzione per rimuovere un task
   const removeTask = async (taskId) => {
     try {
-      await fetch(`${API_URL}/tasks/${taskId}`, {
-        method: 'DELETE', // Facciamo una richiesta DELETE per rimuovere un task
+      const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+        method: 'DELETE',
       });
-      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId)); // Rimuoviamo il task dallo stato
+      if (!response.ok) throw new Error('Errore nella rimozione del task');
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      return { success: true };
     } catch (error) {
-      console.error('Errore nella rimozione del task:', error); // Mostriamo un errore in caso di problemi
+      return { success: false, error: error.message };
     }
   };
 
-  // Funzione per aggiornare un task
   const updateTask = async (taskId, updatedTask) => {
     try {
       const response = await fetch(`${API_URL}/tasks/${taskId}`, {
-        method: 'PUT', // Facciamo una richiesta PUT per aggiornare un task
-        headers: {
-          'Content-Type': 'application/json', // Indichiamo che stiamo inviando dati in formato JSON
-        },
-        body: JSON.stringify(updatedTask), // Inviamo i dati aggiornati del task
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedTask),
       });
-      const result = await response.json(); // Convertiamo la risposta in JSON
+      if (!response.ok) throw new Error("Errore nell'aggiornamento del task");
+      const result = await response.json();
       setTasks((prevTasks) =>
         prevTasks.map((task) => (task.id === taskId ? result.task : task))
-      ); // Aggiorniamo il task nello stato
+      );
+      return { success: true };
     } catch (error) {
-      console.error("Errore nell'aggiornamento del task:", error); // Mostriamo un errore in caso di problemi
+      return { success: false, error: error.message };
     }
   };
 
-  // Effetto per recuperare i task al caricamento del componente
   useEffect(() => {
-    fetchTasks(); // Recuperiamo i task quando il componente viene montato
+    fetchTasks();
   }, []);
 
   return {
-    tasks, // Stato dei task
-    addTask, // Funzione per aggiungere un task
-    removeTask, // Funzione per rimuovere un task
-    updateTask, // Funzione per aggiornare un task
+    tasks,
+    loading,
+    error,
+    addTask,
+    removeTask,
+    updateTask,
+    fetchTasks,
   };
 };
 
-export default useTasks; // Esportiamo il custom hook per usarlo in altri componenti
+export default useTasks;

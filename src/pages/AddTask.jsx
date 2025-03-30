@@ -1,3 +1,4 @@
+// AddTask.jsx
 import React, { useState, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
@@ -9,6 +10,7 @@ const AddTask = () => {
     status: 'To do',
   });
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const { addTask } = useContext(GlobalContext);
 
   const handleSubmit = async (e) => {
@@ -18,12 +20,15 @@ const AddTask = () => {
       return;
     }
 
-    try {
-      await addTask(formData);
+    setSubmitting(true);
+    const { success, error } = await addTask(formData);
+    setSubmitting(false);
+
+    if (success) {
       setFormData({ title: '', description: '', status: 'To do' });
       setError('');
-    } catch (err) {
-      setError('Errore durante la creazione del task');
+    } else {
+      setError(error || 'Errore durante la creazione del task');
     }
   };
 
@@ -34,56 +39,65 @@ const AddTask = () => {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6 text-white flex items-center justify-center gap-2">
-        <PlusCircleIcon className="h-8 w-8 text-blue-400" />
+      <h1 className="text-2xl font-bold text-center mb-6 text-black flex items-center justify-center gap-2">
+        <PlusCircleIcon className="h-8 w-8 text-blue-600" />
         Aggiungi Task
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-2 text-gray-300">Nome</label>
+          <label className="block mb-2 text-gray-700">Nome*</label>
           <input
             type="text"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full p-3 bg-white border border-gray-300 rounded-md text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="Inserisci il nome del task"
+            maxLength="100"
           />
-          {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+          {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
         </div>
 
         <div>
-          <label className="block mb-2 text-gray-300">Descrizione</label>
+          <label className="block mb-2 text-gray-700">Descrizione</label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[100px]"
+            className="w-full p-3 bg-white border border-gray-300 rounded-md text-black focus:outline-none focus:ring-1 focus:ring-blue-500 min-h-[100px]"
             placeholder="Aggiungi una descrizione (facoltativa)"
+            maxLength="500"
           />
         </div>
 
         <div>
-          <label className="block mb-2 text-gray-300">Stato</label>
+          <label className="block mb-2 text-gray-700">Stato</label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full p-3 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full p-3 bg-white border border-gray-300 rounded-md text-black focus:outline-none focus:ring-1 focus:ring-blue-500"
           >
-            <option value="To do">To do</option>
-            <option value="Doing">Doing</option>
-            <option value="Done">Done</option>
+            <option value="To do">Da fare</option>
+            <option value="Doing">In corso</option>
+            <option value="Done">Completato</option>
           </select>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2"
+          disabled={submitting}
+          className="w-full bg-white border border-gray-300 hover:bg-gray-100 text-black py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
         >
-          <PlusCircleIcon className="h-5 w-5" />
-          Aggiungi Task
+          {submitting ? (
+            'Salvataggio...'
+          ) : (
+            <>
+              <PlusCircleIcon className="h-5 w-5" />
+              Aggiungi Task
+            </>
+          )}
         </button>
       </form>
     </div>

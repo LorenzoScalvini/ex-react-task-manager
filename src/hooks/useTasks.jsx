@@ -1,6 +1,5 @@
-// useTasks.jsx
-import { useState, useEffect } from 'react'; // Importa gli hook useState e useEffect da React
-const API_URL = import.meta.env.VITE_API_URL; // Recupera l'URL dell'API dalle variabili d'ambiente
+import { useState, useEffect } from 'react';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Definisce un custom hook chiamato useTasks
 const useTasks = () => {
@@ -95,4 +94,4 @@ const useTasks = () => {
   };
 };
 
-export default useTasks; // Esporta l'hook personalizzato
+export default useTasks;

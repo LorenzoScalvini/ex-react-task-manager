@@ -1,50 +1,67 @@
-// AddTask.jsx
 import React, { useState, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 import { PlusCircleIcon } from '@heroicons/react/24/outline';
 
+// Componente AddTask per l'aggiunta di nuovi task
 const AddTask = () => {
+  // Stato per gestire i dati del form
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    status: 'To do',
+    title: '', // Titolo del task (vuoto inizialmente)
+    description: '', // Descrizione (vuota inizialmente)
+    status: 'To do', // Stato predefinito "Da fare"
   });
-  const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
+
+  // Stati per gestire errori e stato di invio
+  const [error, setError] = useState(''); // Messaggio di errore
+  const [submitting, setSubmitting] = useState(false); // Stato di invio
+
+  // Estrae la funzione addTask dal contesto globale
   const { addTask } = useContext(GlobalContext);
 
+  // Funzione per gestire l'invio del form
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Previene il comportamento default del form
+
+    // Validazione: il titolo è obbligatorio
     if (!formData.title.trim()) {
       setError('Il nome è obbligatorio');
-      return;
+      return; // Interrompe se la validazione fallisce
     }
 
-    setSubmitting(true);
+    setSubmitting(true); // Imposta lo stato di invio a true
+    // Chiama addTask dal contesto e attende il risultato
     const { success, error } = await addTask(formData);
-    setSubmitting(false);
+    setSubmitting(false); // Reimposta lo stato di invio
 
     if (success) {
+      // Resetta il form se l'operazione ha successo
       setFormData({ title: '', description: '', status: 'To do' });
-      setError('');
+      setError(''); // Pulisce eventuali errori
     } else {
+      // Imposta l'errore se qualcosa va storto
       setError(error || 'Errore durante la creazione del task');
     }
   };
 
+  // Funzione generica per gestire i cambiamenti nei campi del form
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Estrae nome e valore dal campo
+    // Aggiorna lo stato del form mantenendo gli altri valori
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Render del componente
   return (
     <div className="max-w-md mx-auto p-4">
+      {/* Titolo della pagina con icona */}
       <h1 className="text-2xl font-bold text-center mb-6 text-black flex items-center justify-center gap-2">
         <PlusCircleIcon className="h-8 w-8 text-blue-600" />
         Aggiungi Task
       </h1>
 
+      {/* Form per l'aggiunta del task */}
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Campo Titolo */}
         <div>
           <label className="block mb-2 text-gray-700">Nome*</label>
           <input
@@ -56,9 +73,11 @@ const AddTask = () => {
             placeholder="Inserisci il nome del task"
             maxLength="100"
           />
+          {/* Mostra errore se presente */}
           {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
         </div>
 
+        {/* Campo Descrizione */}
         <div>
           <label className="block mb-2 text-gray-700">Descrizione</label>
           <textarea
@@ -71,6 +90,7 @@ const AddTask = () => {
           />
         </div>
 
+        {/* Campo Stato (select dropdown) */}
         <div>
           <label className="block mb-2 text-gray-700">Stato</label>
           <select
@@ -85,13 +105,14 @@ const AddTask = () => {
           </select>
         </div>
 
+        {/* Pulsante di submit */}
         <button
           type="submit"
-          disabled={submitting}
+          disabled={submitting} // Disabilita durante l'invio
           className="w-full bg-white border border-gray-300 hover:bg-gray-100 text-black py-3 rounded-md font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
         >
           {submitting ? (
-            'Salvataggio...'
+            'Salvataggio...' // Testo durante l'invio
           ) : (
             <>
               <PlusCircleIcon className="h-5 w-5" />

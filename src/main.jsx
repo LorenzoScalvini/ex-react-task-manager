@@ -1,9 +1,8 @@
-// main.jsx
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Importa il client di ReactDOM
-import App from './App'; // Importa il componente principale App
-import './index.css'; // Importa gli stili globali
-import { GlobalProvider } from './context/GlobalContext'; // Importa il provider del contesto globale
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import './index.css';
+import { GlobalProvider } from './context/GlobalContext';
 
 // Crea il root dell'applicazione
 const root = ReactDOM.createRoot(document.getElementById('root'));

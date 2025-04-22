@@ -1,5 +1,20 @@
 # Task Manager App - Documentazione Dettagliata
 
+## Tech Stack
+
+<p align="left">
+  <img src="https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB" alt="React">
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/Vite-B73BFE?style=flat&logo=vite&logoColor=FFD62E" alt="Vite">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/React_Router-CA4245?style=flat&logo=react-router&logoColor=white" alt="React Router">
+  <img src="https://img.shields.io/badge/Hero_Icons-000000?style=flat&logo=heroicons&logoColor=white" alt="Hero Icons">
+  <img src="https://img.shields.io/badge/REST_API-000000?style=flat&logo=json&logoColor=white" alt="REST API">
+  <img src="https://img.shields.io/badge/Context_API-FFFFFF?style=flat&logo=react&logoColor=61DAFB" alt="Context API">
+  <img src="https://img.shields.io/badge/Responsive_Design-FF6B6B?style=flat" alt="Responsive Design">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=flat" alt="MIT License">
+</p>
+
 ## Panoramica dell'Applicazione
 
 Questa applicazione è un task manager completo sviluppato con React, che consente agli utenti di visualizzare, creare, modificare ed eliminare attività. L'app comunica con un'API REST per la gestione dei dati e utilizza diverse librerie moderne come React Router per la navigazione e Tailwind CSS per lo stile.

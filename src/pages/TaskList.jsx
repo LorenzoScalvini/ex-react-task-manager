@@ -3,6 +3,8 @@ import { GlobalContext } from '../context/GlobalContext';
 import TaskRow from '../components/TaskRow';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
+
+
 const TaskList = () => {
   const { tasks, loading, error } = useContext(GlobalContext);
   const [search, setSearch] = useState('');
